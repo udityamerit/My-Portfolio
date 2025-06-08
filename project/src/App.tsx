@@ -6,6 +6,8 @@ import Projects from './components/Projects';
 import Skills from './components/Skills';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import Cursor from './components/Cursor';
+import Chatbot from './components/Chatbot';
 
 function App() {
   // Initialize dark mode based on user preference
@@ -17,6 +19,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-200 transition-colors duration-300">
+      <Cursor />
       <Header />
       <main>
         <Hero />
@@ -26,6 +29,7 @@ function App() {
         <Contact />
       </main>
       <Footer />
+      <Chatbot />
     </div>
   );
 }

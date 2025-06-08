@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Hide default cursor */
+* {
+  cursor: none !important;
+}
+
+/* Custom cursor explosion effect */
+.cursor-explosion {
+  position: fixed;
+  width: 30px;
+  height: 30px;
+  pointer-events: none;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(45, 212, 191, 0.8) 0%, rgba(45, 212, 191, 0) 70%);
+  z-index: 9999;
+}
+
+/* Ensure cursor is visible on interactive elements */
+a, button, [role="button"] {
+  &:hover ~ .custom-cursor {
+    transform: scale(1.9);
+    background-color: rgba(45, 212, 191, 1);
+  }
+}
+
+/* Text animation classes */
+.animate-text {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Typed.js cursor customization */
+.typed-cursor {
+  font-size: inherit;
+  opacity: 5;
+  animation: blink 0.1s infinite;
+  color: currentColor;
+}
+
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 1; }
+  100% { opacity: 1; }
+}
+
+/* Rainbow animation for cursor */
+@keyframes rainbow {
+  0%    { border-color: #ff0000; }   /* Red */
+  5%    { border-color: #ff4000; }   /* Red-Orange */
+  10%   { border-color: #ff8000; }   /* Orange */
+  15%   { border-color: #ffbf00; }   /* Amber */
+  20%   { border-color: #ffff00; }   /* Yellow */
+  25%   { border-color: #bfff00; }   /* Yellow-Green */
+  30%   { border-color: #80ff00; }   /* Lime */
+  35%   { border-color: #40ff00; }   /* Leaf Green */
+  40%   { border-color: #00ff00; }   /* Green */
+  45%   { border-color: #00ff40; }   /* Aqua-Green */
+  50%   { border-color: #00ff80; }   /* Mint */
+  55%   { border-color: #00ffbf; }   /* Turquoise */
+  60%   { border-color: #00ffff; }   /* Cyan */
+  65%   { border-color: #00bfff; }   /* Sky Blue */
+  70%   { border-color: #0080ff; }   /* Azure */
+  75%   { border-color: #0040ff; }   /* Deep Blue */
+  80%   { border-color: #0000ff; }   /* Blue */
+  85%   { border-color: #4000ff; }   /* Indigo */
+  90%   { border-color: #8000ff; }   /* Purple */
+  95%   { border-color: #bf00ff; }   /* Violet */
+  100%  { border-color: #ff00ff; }   /* Magenta to loop */
+}
+
+
+
+/* Disable custom cursor on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  * {
+    cursor: auto !important;
+  }
+  .cursor-explosion,
+  .custom-cursor {
+    display: none !important;
+  }
+}

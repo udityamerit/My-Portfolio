@@ -15,9 +15,9 @@ export const SKILLS_SUBTITLE = "Technical proficiencies and competencies";
 
 export const CONTACT_TITLE = "Get In Touch";
 export const CONTACT_SUBTITLE = "Interested in collaboration or have questions?";
-export const CONTACT_EMAIL = "uditmerit@gmail.com";
-export const CONTACT_PHONE = "+918169144110";
-export const CONTACT_LOCATION = "Bhopal, Madhya Pradesh";
+export const CONTACT_EMAIL = "tiwarimerit@gmail.com";
+export const CONTACT_PHONE = "+91000000000";
+export const CONTACT_LOCATION = "Bhopal, Madhya Pradesh, India";
 
 export const SOCIAL_LINKS = [
   {

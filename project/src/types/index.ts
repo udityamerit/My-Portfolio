@@ -7,6 +7,7 @@ export interface Project {
   image: string;
   link?: string;
   github?: string;
+  status: 'completed' | 'ongoing' | 'coming-soon';
 }
 
 // Skill type definition

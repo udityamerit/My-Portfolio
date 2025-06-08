@@ -50,17 +50,24 @@ Specializing in Artificial Intelligence and Machine Learning. Focus areas includ
 
 export const experience = [
   {
-    role: 'Core Team Member - Blockchain R&D Club',
+    role: 'Core Team Member - Microsoft Technical Club',
     organization: 'VIT Bhopal',
-    period: '2024 - Present',
-    description: 'Working on Blockchain-based KYC verification system and smart contracts.',
+    period: '2025 - Present',
+    description: 'Leading technical initiatives with Microsoft technologies including Azure cloud services, .NET framework, and Microsoft development tools. Organizing workshops and mentoring students in Microsoft technology stack.',
   },
   {
     role: 'Core Technical Member - Matrix Tech Club',
     organization: 'VIT Bhopal',
     period: '2025 - Present',
-    description: 'Contributing to AI/ML and data science projects like smart city dashboards and healthcare applications.',
+    description: 'Contributing to AI/ML and data science projects like smart city dashboards and healthcare applications. Leading technical teams in innovative projects.',
   },
+  {
+    role: 'Core Team Member - Blockchain R&D Club',
+    organization: 'VIT Bhopal',
+    period: '2024 - Present',
+    description: 'Working on Blockchain-based KYC verification system and smart contracts. Research and development in blockchain technologies and decentralized applications.',
+  },
+  
   {
     role: 'Certifications & Hackathons',
     organization: 'Various',
@@ -69,6 +76,7 @@ export const experience = [
 - Python Libraries for Data Science (Simplilearn)
 - Geodata Processing using Python (ISRO)
 - Basics of Machine Learning (Pantak)
+- Winner of InnovMinds Expo Hackathon (VIT Bhopal)
 - Participant in international Health-Hack AI/ML hackathon
     `,
   },
@@ -79,6 +87,7 @@ export const experience = [
     description: `
 - Built multiple end-to-end ML projects: Breast Cancer Prediction, Chatbots, Face Recognition Attendance System, Weather Forecasting App.
 - Achieved 5 ratings in Python and C++ on HackerRank.
+- 350+ LeetCode problems solved.
     `,
     links: {
       github: 'https://github.com/udityamerit',

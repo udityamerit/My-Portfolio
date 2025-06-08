@@ -394,6 +394,12 @@ const Skills: React.FC = () => {
           <li>
             <span className="font-semibold">AI & ML in Geodata Analysis</span> – ISRO
           </li>
+           <li>
+            <span className="font-semibold">Google Cloud AI </span> – Simplilearn
+          </li>
+           <li>
+            <span className="font-semibold">Introduction to Reliable Deep Learning </span> – Google Cloud
+          </li>
         </ul>
         <a
           href="https://www.linkedin.com/in/uditya-narayan-tiwari-562332289/details/certifications/"
