@@ -50,7 +50,9 @@ const Footer: React.FC = () => {
               <li><a href="#home" className="text-slate-400 hover:text-teal-400 transition-colors">Home</a></li>
               <li><a href="#about" className="text-slate-400 hover:text-teal-400 transition-colors">About</a></li>
               <li><a href="#projects" className="text-slate-400 hover:text-teal-400 transition-colors">Projects</a></li>
+              <li><a href="#coding-profiles" className="text-slate-400 hover:text-teal-400 transition-colors">Coding</a></li>
               <li><a href="#skills" className="text-slate-400 hover:text-teal-400 transition-colors">Skills</a></li>
+              <li><a href="#knowledge-hub" className="text-slate-400 hover:text-teal-400 transition-colors">Knowledge</a></li>
               <li><a href="#contact" className="text-slate-400 hover:text-teal-400 transition-colors">Contact</a></li>
             </ul>
           </nav>

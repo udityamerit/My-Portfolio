@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { ChevronDown, Github, Linkedin, Mail } from 'lucide-react';
+import { ChevronDown, Github, Linkedin, Mail, Globe, Youtube } from 'lucide-react';
 import { HERO_TITLE, HERO_SUBTITLE, HERO_DESCRIPTION } from '../utils/constants';
 import Typed from 'typed.js';
 
@@ -7,6 +7,10 @@ const Hero: React.FC = () => {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLHeadingElement>(null);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
+
+  const handleSocialClick = (url: string, platform: string) => {
+    // Link click tracking removed
+  };
 
   const startTypingSequence = () => {
     if (!titleRef.current || !subtitleRef.current || !descriptionRef.current) return;
@@ -61,96 +65,122 @@ const Hero: React.FC = () => {
   return (
     <section 
       id="home" 
-      className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 pt-16 px-4 sm:px-6 lg:px-8"
+      className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-indigo-100 to-slate-100 dark:from-slate-900 dark:via-blue-900 dark:to-slate-800 pt-16 px-3 sm:px-4 md:px-6 lg:px-8"
     >
-      <div className="container mx-auto py-8 md:py-16">
-        <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-8">
-          <div className="w-full lg:w-1/2 text-center lg:text-left space-y-4 md:space-y-6">
+      <div className="container mx-auto py-4 sm:py-6 md:py-8 lg:py-16 max-w-7xl">
+        <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-6 sm:gap-8 lg:gap-12">
+          {/* Text Content */}
+          <div className="w-full lg:w-1/2 text-center lg:text-left space-y-3 sm:space-y-4 md:space-y-6">
             <div className="animate-fade-in">
-              <p className="text-teal-600 dark:text-teal-400 font-medium mb-2">Hello, I'm</p>
-              <h1 ref={titleRef} className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white mb-2 leading-tight min-h-[1.2em]"></h1>
-              <h2 ref={subtitleRef} className="text-xl sm:text-2xl md:text-3xl font-medium text-slate-700 dark:text-slate-300 mb-4 md:mb-6 min-h-[1.2em]"></h2>
-              <p ref={descriptionRef} className="text-base md:text-lg text-slate-600 dark:text-slate-400 max-w-xl mx-auto lg:mx-0 mb-6 md:mb-8 min-h-[1.2em]"></p>
+              <p className="text-blue-600 dark:text-blue-400 font-medium mb-2 text-sm sm:text-base">Hello, I'm</p>
+              <h1 ref={titleRef} className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl font-bold text-slate-900 dark:text-white mb-2 leading-tight min-h-[1.2em]"></h1>
+              <h2 ref={subtitleRef} className="text-lg xs:text-xl sm:text-2xl md:text-3xl lg:text-2xl xl:text-3xl font-medium text-slate-700 dark:text-slate-300 mb-3 sm:mb-4 md:mb-6 min-h-[1.2em]"></h2>
+              <p ref={descriptionRef} className="text-sm sm:text-base md:text-lg lg:text-base xl:text-lg text-slate-600 dark:text-slate-400 max-w-xl mx-auto lg:mx-0 mb-4 sm:mb-6 md:mb-8 min-h-[1.2em] leading-relaxed"></p>
 
-              <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 mb-8">
+              {/* Action Buttons */}
+              <div className="flex flex-col xs:flex-row justify-center lg:justify-start gap-3 sm:gap-4 mb-6 sm:mb-8">
                 <a 
                   href="#contact" 
-                  className="w-full sm:w-auto bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-md font-medium transition-colors text-center"
+                  className="w-full xs:w-auto bg-blue-600 hover:bg-blue-700 text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-md font-medium transition-colors text-center text-sm sm:text-base"
                 >
                   Get in touch
                 </a>
                 <a 
                   href="#projects" 
-                  className="w-full sm:w-auto bg-white dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-300 dark:border-slate-600 hover:border-teal-600 dark:hover:border-teal-400 px-6 py-3 rounded-md font-medium transition-colors text-center"
+                  className="w-full xs:w-auto bg-white dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-300 dark:border-slate-600 hover:border-blue-600 dark:hover:border-blue-400 px-4 sm:px-6 py-2.5 sm:py-3 rounded-md font-medium transition-colors text-center text-sm sm:text-base"
                 >
                   View my work
                 </a>
               </div>
 
-              <div className="flex items-center justify-center lg:justify-start gap-6">
+              {/* Social Links */}
+              <div className="flex items-center justify-center lg:justify-start gap-4 sm:gap-6">
                 <a 
                   href="https://github.com/udityamerit" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="text-slate-600 dark:text-slate-400 hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+                  onClick={() => handleSocialClick('https://github.com/udityamerit', 'github')}
+                  className="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors p-2 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-full"
                   aria-label="GitHub Profile"
                 >
-                  <Github size={24} />
+                  <Github size={20} className="sm:w-6 sm:h-6" />
                 </a>
                 <a 
                   href="https://www.linkedin.com/in/uditya-narayan-tiwari-562332289/" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="text-slate-600 dark:text-slate-400 hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+                  onClick={() => handleSocialClick('https://www.linkedin.com/in/uditya-narayan-tiwari-562332289/', 'linkedin')}
+                  className="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors p-2 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-full"
                   aria-label="LinkedIn Profile"
                 >
-                  <Linkedin size={24} />
+                  <Linkedin size={20} className="sm:w-6 sm:h-6" />
                 </a>
                 <a 
                   href="mailto:uditmerit@gmail.com" 
-                  className="text-slate-600 dark:text-slate-400 hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+                  onClick={() => handleSocialClick('mailto:uditmerit@gmail.com', 'email')}
+                  className="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors p-2 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-full"
                   aria-label="Email Me"
                 >
-                  <Mail size={24} />
+                  <Mail size={20} className="sm:w-6 sm:h-6" />
                 </a>
                 <a 
                   href="https://leetcode.com/u/Uditya_Narayan_Tiwari/" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="hover:scale-110 transition-transform"
+                  onClick={() => handleSocialClick('https://leetcode.com/u/Uditya_Narayan_Tiwari/', 'leetcode')}
+                  className="hover:scale-110 transition-transform p-2 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-full"
                   aria-label="LeetCode Profile"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 32 32"
                     fill="currentColor"
-                    className="w-6 h-6 text-slate-600 dark:text-slate-400 hover:text-teal-600 dark:hover:text-teal-400"
+                    className="w-5 h-5 sm:w-6 sm:h-6 text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400"
                   >
                     <path d="M23.347 5.532L11.664 16.91a2.025 2.025 0 000 2.78l11.683 11.38a1.572 1.572 0 002.212-.064 1.576 1.576 0 00-.064-2.213L15.665 17.9l7.952-7.873a1.576 1.576 0 10-2.27-2.495zM8.073 7.665L.999 14.8a1.578 1.578 0 00-.043 2.217l6.892 6.961a1.571 1.571 0 002.236-.007 1.569 1.569 0 00-.011-2.22l-4.322-4.343a.9.9 0 01-.27-.662v-1.63c0-.255.11-.5.298-.665l4.327-4.346a1.567 1.567 0 00-.034-2.1 1.572 1.572 0 00-2.078-.095z" />
                   </svg>
+                </a>
+                <a 
+                  href="https://udityaknowledgebase.netlify.app/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  onClick={() => handleSocialClick('https://udityaknowledgebase.netlify.app/', 'knowledge-base')}
+                  className="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors p-2 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-full"
+                  aria-label="Knowledge Base"
+                >
+                  <Globe size={20} className="sm:w-6 sm:h-6" />
+                </a>
+                <a 
+                  href="https://www.youtube.com/@KGPTalkie" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  onClick={() => handleSocialClick('https://www.youtube.com/@KGPTalkie', 'youtube')}
+                  className="text-slate-600 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-400 transition-colors p-2 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full"
+                  aria-label="KGP Talkie YouTube"
+                >
+                  <Youtube size={20} className="sm:w-6 sm:h-6" />
                 </a>
               </div>
             </div>
           </div>
 
-          <div className="w-full lg:w-1/2 flex justify-center lg:justify-end mb-8 lg:mb-0">
-            <div className="relative w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80">
-              <div className="absolute -top-6 -left-6 w-full h-full rounded-full bg-gradient-to-br from-teal-500 to-blue-600 opacity-20 dark:opacity-30 animate-pulse"></div>
+          {/* Profile Image */}
+          <div className="w-full lg:w-1/2 flex justify-center lg:justify-end mb-6 sm:mb-8 lg:mb-0">
+            <div className="relative w-40 h-40 xs:w-48 xs:h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 xl:w-80 xl:h-80">
+              <div className="absolute -top-4 -left-4 sm:-top-6 sm:-left-6 w-full h-full rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 opacity-20 dark:opacity-30 animate-pulse"></div>
               <img 
-                src="https://media.licdn.com/dms/image/v2/D4D22AQHpaZPE8htZAw/feedshare-shrink_1280/feedshare-shrink_1280/0/1725278850755?e=1751500800&v=beta&t=ylZ52mLJGOWwMMzhmCexmm-Mu3yUzK2b01VHuO3qcw4" 
+                src="https://github.com/udityamerit/Udityamerit/blob/main/uditya.png?raw=true" 
                 alt="AI Student" 
-                className="w-full h-full object-cover rounded-full border-4 border-white dark:border-slate-800 shadow-lg relative z-10"
+                className="w-full h-full object-cover rounded-full border-3 sm:border-4 border-white dark:border-slate-800 shadow-lg relative z-10"
               />
-              <div className="absolute -bottom-4 -right-4 w-20 h-20 sm:w-24 sm:h-24 bg-white dark:bg-slate-800 rounded-full flex items-center justify-center shadow-lg transform hover:scale-110 transition-transform">
-                <span className="text-teal-600 dark:text-teal-400 font-bold text-sm sm:text-base">Learner</span>
-              </div>
             </div>
           </div>
         </div>
 
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce hidden md:block">
+        {/* Scroll Down Indicator */}
+        <div className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce hidden sm:block">
           <a href="#about" aria-label="Scroll down">
-            <ChevronDown className="text-slate-600 dark:text-slate-400" size={32} />
+            <ChevronDown className="text-slate-600 dark:text-slate-400" size={28} />
           </a>
         </div>
       </div>

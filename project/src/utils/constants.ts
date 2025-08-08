@@ -32,6 +32,18 @@ export const SOCIAL_LINKS = [
     name: "Twitter",
     url: "https://twitter.com",
   },
+  {
+    name: "Knowledge Base",
+    url: "https://udityaknowledgebase.netlify.app/",
+  },
+  {
+    name: "YouTube - KGP Talkie",
+    url: "https://www.youtube.com/@KGPTalkie",
+  },
+  {
+    name: "YouTube - Code Fusion Hindi",
+    url: "https://www.youtube.com/@CODEFUSIONHINDI",
+  },
 ];
 
-export const RESUME_URL = "https://drive.google.com/file/d/1pD3b9Zi2YDtsSLlabmAAk_XuE4oe55EU/view?usp=sharing";
+export const RESUME_URL = "https://drive.google.com/file/d/1SwQl032ItGq6UFx2Hy9N4t7S1fwelYoq/view?usp=sharing";

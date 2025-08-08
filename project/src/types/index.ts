@@ -6,6 +6,7 @@ export interface Project {
   technologies: string[];
   image: string;
   link?: string;
+  demo?: string;
   github?: string;
   status: 'completed' | 'ongoing' | 'coming-soon';
 }

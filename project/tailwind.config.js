@@ -12,11 +12,20 @@ export default {
         'xl': '1280px',
         '2xl': '1536px',
       },
+      spacing: {
+        '18': '4.5rem',
+        '88': '22rem',
+        '128': '32rem',
+      },
+      fontSize: {
+        'xxs': '0.625rem',
+      },
       animation: {
         'fade-in': 'fadeIn 0.8s ease-in-out',
         'slide-up': 'slideUp 0.5s ease-out',
         'pulse': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         'scale': 'scale 0.3s ease-in-out',
+        'bounce-slow': 'bounce 3s infinite',
       },
       keyframes: {
         fadeIn: {
@@ -35,6 +44,14 @@ export default {
           '0%': { transform: 'scale(1)' },
           '100%': { transform: 'scale(1.05)' },
         },
+      },
+      maxWidth: {
+        '8xl': '88rem',
+        '9xl': '96rem',
+      },
+      minHeight: {
+        'screen-75': '75vh',
+        'screen-50': '50vh',
       },
     },
   },

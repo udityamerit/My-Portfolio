@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Moon, Sun, Download, GraduationCap, Trophy, Award, AlignCenterVertical as Certificate } from 'lucide-react';
+import { Menu, X, Moon, Sun, Download, GraduationCap, Trophy, Code } from 'lucide-react';
 import { RESUME_URL } from '../utils/constants';
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('');
+
+  // Set dark mode as default on component mount
+  useEffect(() => {
+    document.documentElement.classList.add('dark');
+  }, []);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   
@@ -62,10 +67,10 @@ const Header: React.FC = () => {
     { name: 'Home', href: '#home' },
     { name: 'About', href: '#about' },
     { name: 'Projects', href: '#projects' },
-    { name: 'Skills', href: '#skills', icon: <Trophy size={20} /> },
-    { name: 'Education', href: '#skills?tab=education', icon: <GraduationCap size={20} /> },
-    { name: 'Experience', href: '#skills?tab=experience', icon: <Certificate size={20} /> },
-    { name: 'Achievements', href: '#skills?tab=achievements', icon: <Award size={20} /> },
+    { name: 'Coding', href: '#coding-profiles', icon: <Code size={16} className="sm:w-5 sm:h-5" /> },
+    { name: 'Skills', href: '#skills', icon: <Trophy size={16} className="sm:w-5 sm:h-5" /> },
+    { name: 'Education', href: '#skills?tab=education', icon: <GraduationCap size={16} className="sm:w-5 sm:h-5" /> },
+    { name: 'Knowledge', href: '#knowledge-hub' },
     { name: 'Contact', href: '#contact' },
   ];
 
@@ -74,65 +79,71 @@ const Header: React.FC = () => {
       className={`fixed w-full z-50 transition-all duration-300 ${
         isScrolled 
           ? 'bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm shadow-md py-2' 
-          : 'bg-transparent py-4'
+          : 'bg-transparent py-3 sm:py-4'
       }`}
     >
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8 max-w-7xl">
         <div className="flex justify-between items-center">
+          {/* Logo */}
           <a 
             href="#home" 
-            className="text-2xl font-bold text-teal-600 dark:text-teal-400"
+            className="text-lg sm:text-xl md:text-2xl font-bold text-blue-600 dark:text-blue-400 truncate"
             onClick={(e) => handleNavClick(e, '#home')}
           >
-            Uditya Narayan Tiwari
+            <span className="hidden sm:inline">Uditya Narayan Tiwari</span>
+            <span className="sm:hidden">Uditya N.T.</span>
           </a>
 
-          <nav className="hidden md:flex items-center space-x-6">
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex items-center space-x-4 xl:space-x-6">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.href)}
-                className={`flex items-center gap-2 text-lg font-medium transition-colors ${
+                className={`flex items-center gap-1 xl:gap-2 text-sm xl:text-base font-medium transition-colors whitespace-nowrap ${
                   (activeSection === link.href.split('#')[1]?.split('?')[0] ||
-                  (link.href.includes('skills') && activeSection === 'skills'))
-                    ? 'text-teal-600 dark:text-teal-400'
-                    : 'text-slate-700 dark:text-slate-200 hover:text-teal-600 dark:hover:text-teal-400'
+                  (link.href.includes('skills') && activeSection === 'skills') ||
+                  (link.href.includes('coding-profiles') && activeSection === 'coding-profiles'))
+                    ? 'text-blue-600 dark:text-blue-400'
+                    : 'text-slate-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400'
                 }`}
               >
                 {link.icon && link.icon}
-                {link.name}
+                <span className="hidden xl:inline">{link.name}</span>
+                <span className="xl:hidden">{link.name.split(' ')[0]}</span>
               </a>
             ))}
             
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 xl:space-x-4">
               <button
                 onClick={toggleDarkMode}
-                className="p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                className="p-2 rounded-full bg-blue-100 dark:bg-blue-900/30 text-slate-700 dark:text-slate-200 hover:bg-blue-200 dark:hover:bg-blue-800/50 transition-colors"
                 aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
               >
-                {isDarkMode ? <Sun size={24} /> : <Moon size={24} />}
+                {isDarkMode ? <Sun size={20} className="sm:w-6 sm:h-6" /> : <Moon size={20} className="sm:w-6 sm:h-6" />}
               </button>
               
               <a
                 href={RESUME_URL}
-                className="flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-md transition-colors text-lg font-medium"
+                className="flex items-center gap-1 xl:gap-2 bg-blue-600 hover:bg-blue-700 text-white px-3 xl:px-6 py-2 xl:py-3 rounded-md transition-colors text-sm xl:text-base font-medium"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Download size={20} />
-                Resume
+                <Download size={16} className="sm:w-5 sm:h-5" />
+                <span className="hidden sm:inline">Resume</span>
               </a>
             </div>
           </nav>
 
-          <div className="flex items-center space-x-4 md:hidden">
+          {/* Mobile Controls */}
+          <div className="flex items-center space-x-2 sm:space-x-4 lg:hidden">
             <button
               onClick={toggleDarkMode}
-              className="p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200"
+              className="p-2 rounded-full bg-blue-100 dark:bg-blue-900/30 text-slate-700 dark:text-slate-200"
               aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
             >
-              {isDarkMode ? <Sun size={24} /> : <Moon size={24} />}
+              {isDarkMode ? <Sun size={20} className="sm:w-6 sm:h-6" /> : <Moon size={20} className="sm:w-6 sm:h-6" />}
             </button>
             
             <button
@@ -140,24 +151,26 @@ const Header: React.FC = () => {
               className="p-2 rounded-md text-slate-700 dark:text-slate-200"
               aria-label="Toggle menu"
             >
-              {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+              {isMenuOpen ? <X size={24} className="sm:w-7 sm:h-7" /> : <Menu size={24} className="sm:w-7 sm:h-7" />}
             </button>
           </div>
         </div>
 
+        {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden bg-white dark:bg-slate-900 shadow-lg mt-4 rounded-lg">
-            <div className="container mx-auto px-4 py-4 flex flex-col space-y-4">
+          <div className="lg:hidden bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm shadow-lg mt-4 rounded-lg border border-white/20 dark:border-slate-700/50 max-h-[80vh] overflow-y-auto">
+            <div className="container mx-auto px-3 sm:px-4 py-4 flex flex-col space-y-3 sm:space-y-4">
               {navLinks.map((link) => (
                 <a
                   key={link.name}
                   href={link.href}
                   onClick={(e) => handleNavClick(e, link.href)}
-                  className={`flex items-center gap-2 py-2 text-lg font-medium transition-colors ${
+                  className={`flex items-center gap-2 py-2 text-base sm:text-lg font-medium transition-colors ${
                     (activeSection === link.href.split('#')[1]?.split('?')[0] ||
-                    (link.href.includes('skills') && activeSection === 'skills'))
-                      ? 'text-teal-600 dark:text-teal-400'
-                      : 'text-slate-700 dark:text-slate-200 hover:text-teal-600 dark:hover:text-teal-400'
+                    (link.href.includes('skills') && activeSection === 'skills') ||
+                    (link.href.includes('coding-profiles') && activeSection === 'coding-profiles'))
+                      ? 'text-blue-600 dark:text-blue-400'
+                      : 'text-slate-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400'
                   }`}
                 >
                   {link.icon && link.icon}
@@ -167,11 +180,11 @@ const Header: React.FC = () => {
 
               <a
                 href={RESUME_URL}
-                className="flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-md w-fit transition-colors text-lg font-medium"
+                className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-md w-fit transition-colors text-base sm:text-lg font-medium"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Download size={20} />
+                <Download size={16} className="sm:w-5 sm:h-5" />
                 Resume
               </a>
             </div>
