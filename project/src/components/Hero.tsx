@@ -2,6 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import { ChevronDown, Github, Linkedin, Mail, Globe, Youtube } from 'lucide-react';
 import { HERO_TITLE, HERO_SUBTITLE, HERO_DESCRIPTION } from '../utils/constants';
 import Typed from 'typed.js';
+import { RESUME_URL } from '../utils/constants';
+import { Download } from 'lucide-react';
 
 const Hero: React.FC = () => {
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -91,6 +93,15 @@ const Hero: React.FC = () => {
                 >
                   View my work
                 </a>
+                <a 
+                  href={RESUME_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full xs:w-auto bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-md font-medium transition-all duration-300 text-center text-sm sm:text-base flex items-center justify-center gap-2"
+                >
+                  <Download size={16} className="sm:w-5 sm:h-5" />
+                  Download Resume
+                </a>
               </div>
 
               {/* Social Links */}
@@ -167,11 +178,21 @@ const Hero: React.FC = () => {
           {/* Profile Image */}
           <div className="w-full lg:w-1/2 flex justify-center lg:justify-end mb-6 sm:mb-8 lg:mb-0">
             <div className="relative w-40 h-40 xs:w-48 xs:h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 xl:w-80 xl:h-80">
-              <div className="absolute -top-4 -left-4 sm:-top-6 sm:-left-6 w-full h-full rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 opacity-20 dark:opacity-30 animate-pulse"></div>
+              {/* Thick Border with Running Light */}
+              <div className="absolute inset-0 rounded-full p-2 bg-gradient-to-r from-blue-500 via-purple-500 via-pink-500 via-red-500 via-orange-500 via-yellow-500 via-green-500 via-cyan-500 to-blue-500 animate-border-run">
+                <div className="w-full h-full rounded-full bg-white dark:bg-slate-900 border-4 border-transparent"></div>
+              </div>
+              
+              {/* Outer Glow Effect */}
+              <div className="absolute -inset-3 rounded-full bg-gradient-to-r from-blue-400/40 via-purple-400/40 via-pink-400/40 to-cyan-400/40 blur-lg animate-glow-pulse"></div>
+              
+              {/* Inner Glow Ring */}
+              <div className="absolute inset-1 rounded-full bg-gradient-to-r from-white/20 to-transparent animate-pulse"></div>
+              
               <img 
-                src="https://github.com/udityamerit/Udityamerit/blob/main/uditya.png?raw=true" 
+                src="https://avatars.githubusercontent.com/u/138104365?v=4" 
                 alt="AI Student" 
-                className="w-full h-full object-cover rounded-full border-3 sm:border-4 border-white dark:border-slate-800 shadow-lg relative z-10"
+                className="w-full h-full object-cover rounded-full shadow-2xl relative z-10 border-2 border-white/50 dark:border-slate-700/50"
               />
             </div>
           </div>

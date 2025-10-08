@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Moon, Sun, Download, GraduationCap, Trophy, Code } from 'lucide-react';
+import { Menu, X, Moon, Sun, GraduationCap, Trophy, Code, Download } from 'lucide-react';
 import { RESUME_URL } from '../utils/constants';
 
 const Header: React.FC = () => {
@@ -101,12 +101,12 @@ const Header: React.FC = () => {
                 key={link.name}
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.href)}
-                className={`flex items-center gap-1 xl:gap-2 text-sm xl:text-base font-medium transition-colors whitespace-nowrap ${
+                className={`relative flex items-center gap-2 py-3 px-4 text-base sm:text-lg font-medium transition-all duration-300 rounded-lg ${
                   (activeSection === link.href.split('#')[1]?.split('?')[0] ||
                   (link.href.includes('skills') && activeSection === 'skills') ||
                   (link.href.includes('coding-profiles') && activeSection === 'coding-profiles'))
-                    ? 'text-blue-600 dark:text-blue-400'
-                    : 'text-slate-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400'
+                    ? 'text-white bg-gradient-to-r from-blue-600 to-indigo-600 shadow-lg transform scale-105'
+                    : 'text-slate-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:scale-105'
                 }`}
               >
                 {link.icon && link.icon}
@@ -178,15 +178,6 @@ const Header: React.FC = () => {
                 </a>
               ))}
 
-              <a
-                href={RESUME_URL}
-                className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-md w-fit transition-colors text-base sm:text-lg font-medium"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Download size={16} className="sm:w-5 sm:h-5" />
-                Resume
-              </a>
             </div>
           </div>
         )}

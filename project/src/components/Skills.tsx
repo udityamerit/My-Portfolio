@@ -344,7 +344,7 @@ const Skills: React.FC = () => {
                   <div>
                     <p className="text-sm sm:text-base md:text-lg font-semibold mb-2 sm:mb-3 text-gray-700 dark:text-gray-300">Problems Solved</p>
                     <div className="flex justify-between items-center mb-2 sm:mb-3">
-                      <span className="text-sm sm:text-base text-gray-800 dark:text-gray-200 font-medium">350+ Questions</span>
+                      <span className="text-sm sm:text-base text-gray-800 dark:text-gray-200 font-medium">400+ Questions</span>
                       <span className="text-sm sm:text-base text-blue-600 dark:text-blue-400 font-bold">70%</span>
                     </div>
                     <div className="w-full bg-gray-200 dark:bg-slate-700 rounded-full h-2 sm:h-3 overflow-hidden">

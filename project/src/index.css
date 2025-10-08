@@ -80,7 +80,51 @@ a, button, [role="button"] {
   100%  { border-color: #ff00ff; }   /* Magenta to loop */
 }
 
+/* Thick border with running light animation */
+@keyframes border-run {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 
+.animate-border-run {
+  animation: border-run 3s linear infinite;
+}
+
+/* Enhanced glow pulse effects */
+@keyframes glow-pulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+/* Additional border effects */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
 
 /* Disable custom cursor on touch devices */
 @media (hover: none) and (pointer: coarse) {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import {
@@ -13,23 +13,8 @@ import {
   Github,
   Star,
   GitBranch,
-  Eye,
-  BarChart2,
-  GitCommit
+  Eye
 } from 'lucide-react';
-
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  LineChart,
-  Line,
-  Cell
-} from 'recharts';
 
 interface LeetCodeStats {
   totalSolved: number;
@@ -61,24 +46,6 @@ interface GithubRepo {
   language: string;
 }
 
-interface LanguageData {
-  name: string;
-  count: number;
-}
-
-interface CommitData {
-  name: string;
-  commits: number;
-}
-
-type TimeFrame = 'weekly' | 'monthly' | 'yearly';
-
-const CACHE_EXPIRY_KEY = 'github_cache_expiry';
-const GITHUB_STATS_KEY = 'github_stats_cache';
-const GITHUB_REPOS_KEY = 'github_repos_cache';
-const GITHUB_LANGUAGES_KEY = 'github_languages_cache';
-const GITHUB_COMMITS_KEY = 'github_commits_cache';
-
 const CodingProfiles: React.FC = () => {
   const { ref, inView } = useInView({
     threshold: 0.1,
@@ -96,16 +63,8 @@ const CodingProfiles: React.FC = () => {
   const [githubRepos, setGithubRepos] = useState<GithubRepo[]>([]);
   const [reposLoading, setReposLoading] = useState(true);
   const [reposError, setReposError] = useState<string | null>(null);
-  
-  const [languages, setLanguages] = useState<LanguageData[]>([]);
-  const [languagesLoading, setLanguagesLoading] = useState(true);
-  
-  const [commits, setCommits] = useState<CommitData[]>([]);
-  const [commitsLoading, setCommitsLoading] = useState(true);
-  const [timeFrame, setTimeFrame] = useState<TimeFrame>('monthly');
 
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
-  const isInitialLoad = useRef(true);
 
   const fallbackLeetCodeStats: LeetCodeStats = {
     totalSolved: 350,
@@ -122,40 +81,35 @@ const CodingProfiles: React.FC = () => {
     reputation: 0
   };
   const fallbackGithubStats: GithubStats = {
-    publicRepos: 15,
+    publicRepos: 41,
     followers: 10,
-  };
-
-  const isCacheValid = () => {
-    const expiry = localStorage.getItem(CACHE_EXPIRY_KEY);
-    if (!expiry) return false;
-    return new Date().getTime() < parseInt(expiry);
-  };
-  
-  const setCache = (key: string, data: any) => {
-    localStorage.setItem(key, JSON.stringify(data));
-    const oneDay = 24 * 60 * 60 * 1000;
-    localStorage.setItem(CACHE_EXPIRY_KEY, (new Date().getTime() + oneDay).toString());
   };
 
   const fetchLeetCodeData = async () => {
     setLeetcodeLoading(true);
     setLeetcodeError(null);
+
     try {
       const endpoints = [
         'https://leetcode-stats-api.herokuapp.com/Uditya_Narayan_Tiwari',
         'https://alfa-leetcode-api.onrender.com/Uditya_Narayan_Tiwari/solved',
         'https://leetcode-api-faisalshohag.vercel.app/Uditya_Narayan_Tiwari'
       ];
+
       let data = null;
+
       for (const endpoint of endpoints) {
         try {
           const response = await fetch(endpoint, {
             method: 'GET',
-            headers: { 'Accept': 'application/json' },
+            headers: {
+              'Accept': 'application/json',
+            },
           });
+
           if (response.ok) {
             const result = await response.json();
+
             if (result.totalSolved !== undefined || result.solvedProblem !== undefined) {
               data = {
                 totalSolved: result.totalSolved || result.solvedProblem || result.totalQuestionsSolved || fallbackLeetCodeStats.totalSolved,
@@ -179,6 +133,7 @@ const CodingProfiles: React.FC = () => {
           continue;
         }
       }
+
       if (data) {
         setLeetcodeData(data);
       } else {
@@ -196,19 +151,11 @@ const CodingProfiles: React.FC = () => {
   const fetchGithubData = async () => {
     setGithubLoading(true);
     setGithubError(null);
-    if (isCacheValid()) {
-      const cachedData = localStorage.getItem(GITHUB_STATS_KEY);
-      if (cachedData) {
-        setGithubData(JSON.parse(cachedData));
-        setGithubLoading(false);
-        setLastUpdated(new Date());
-        return;
-      }
-    }
     try {
       const response = await fetch('https://api.github.com/users/udityamerit', {
         headers: { 'Accept': 'application/vnd.github.v3+json' },
       });
+
       if (response.ok) {
         const result = await response.json();
         setGithubData({
@@ -216,7 +163,6 @@ const CodingProfiles: React.FC = () => {
           followers: result.followers
         });
         setLastUpdated(new Date());
-        setCache(GITHUB_STATS_KEY, { publicRepos: result.public_repos, followers: result.followers });
       } else {
         throw new Error('Failed to fetch GitHub data');
       }
@@ -232,26 +178,24 @@ const CodingProfiles: React.FC = () => {
   const fetchGithubRepos = async () => {
     setReposLoading(true);
     setReposError(null);
-    if (isCacheValid()) {
-      const cachedData = localStorage.getItem(GITHUB_REPOS_KEY);
-      if (cachedData) {
-        setGithubRepos(JSON.parse(cachedData));
-        setReposLoading(false);
-        return;
-      }
-    }
     try {
       const response = await fetch('https://api.github.com/users/udityamerit/repos?sort=pushed&per_page=100', {
         headers: { 'Accept': 'application/vnd.github.v3+json' },
       });
+
       if (response.ok) {
         const result = await response.json();
         const hardcodedRepoName = 'Complete-Machine-Learning-For-Beginners';
+
         const hardcodedRepo = result.find((repo: any) => repo.name === hardcodedRepoName);
         const otherRepos = result.filter((repo: any) => repo.name !== hardcodedRepoName);
+
         otherRepos.sort((a: any, b: any) => new Date(b.pushed_at).getTime() - new Date(a.pushed_at).getTime());
+
         const top3Repos = otherRepos.slice(0, 3);
+        
         const combinedRepos = hardcodedRepo ? [hardcodedRepo, ...top3Repos] : top3Repos;
+
         const formattedRepos = combinedRepos.map((repo: any) => ({
           id: repo.id,
           name: repo.name,
@@ -262,7 +206,6 @@ const CodingProfiles: React.FC = () => {
           language: repo.language
         }));
         setGithubRepos(formattedRepos);
-        setCache(GITHUB_REPOS_KEY, formattedRepos);
       } else {
         throw new Error('Failed to fetch GitHub repositories');
       }
@@ -274,135 +217,11 @@ const CodingProfiles: React.FC = () => {
     }
   };
 
-  const fetchGithubLanguages = async () => {
-    setLanguagesLoading(true);
-    if (isCacheValid()) {
-      const cachedData = localStorage.getItem(GITHUB_LANGUAGES_KEY);
-      if (cachedData) {
-        setLanguages(JSON.parse(cachedData));
-        setLanguagesLoading(false);
-        return;
-      }
-    }
-    try {
-        const response = await fetch('https://api.github.com/users/udityamerit/repos?per_page=100', {
-            headers: { 'Accept': 'application/vnd.github.v3+json' },
-        });
-        if (response.ok) {
-            const repos = await response.json();
-            const languageCounts: { [key: string]: number } = {};
-            repos.forEach((repo: any) => {
-                if (repo.language) {
-                    languageCounts[repo.language] = (languageCounts[repo.language] || 0) + 1;
-                }
-            });
-            const sortedLanguages = Object.entries(languageCounts)
-                .sort(([, a], [, b]) => b - a)
-                .map(([name, count]) => ({ name, count }))
-                .slice(0, 5); // Top 5 languages
-            setLanguages(sortedLanguages);
-            setCache(GITHUB_LANGUAGES_KEY, sortedLanguages);
-        }
-    } catch (err) {
-        console.error('Error fetching languages:', err);
-    } finally {
-        setLanguagesLoading(false);
-    }
-  };
-
-  const fetchAllCommits = async () => {
-    try {
-        const reposResponse = await fetch('https://api.github.com/users/udityamerit/repos?per_page=100', {
-            headers: { 'Accept': 'application/vnd.github.v3+json' },
-        });
-        if (!reposResponse.ok) throw new Error('Failed to fetch repos for commits');
-
-        const repos = await reposResponse.json();
-        const commitsPromises = repos.map((repo: any) => 
-            fetch(`https://api.github.com/repos/udityamerit/${repo.name}/stats/commit_activity`, {
-                headers: { 'Accept': 'application/vnd.github.v3+json' },
-            })
-            .then(res => res.ok ? res.json() : null)
-            .catch(() => null)
-        );
-
-        const allRepoCommits = await Promise.all(commitsPromises);
-        const aggregatedData: { [key: string]: number } = {};
-        
-        allRepoCommits.forEach(weeklyData => {
-            if (weeklyData && Array.isArray(weeklyData)) {
-                weeklyData.forEach((week: any) => {
-                    const date = new Date(week.week * 1000);
-                    const weekName = `Week ${new Date(date.getFullYear(), date.getMonth(), date.getDate()).getWeek()}`;
-                    const monthName = date.toLocaleString('default', { month: 'short', year: 'numeric' });
-                    const yearName = date.getFullYear().toString();
-
-                    if (!aggregatedData[weekName]) aggregatedData[weekName] = 0;
-                    if (!aggregatedData[monthName]) aggregatedData[monthName] = 0;
-                    if (!aggregatedData[yearName]) aggregatedData[yearName] = 0;
-
-                    aggregatedData[weekName] += week.total;
-                    aggregatedData[monthName] += week.total;
-                    aggregatedData[yearName] += week.total;
-                });
-            }
-        });
-
-        return aggregatedData;
-        
-    } catch (err) {
-        console.error('Error fetching commits:', err);
-        return {};
-    }
-  };
-
-  const updateCommitsData = async () => {
-    setCommitsLoading(true);
-    const cachedData = isCacheValid() ? JSON.parse(localStorage.getItem(GITHUB_COMMITS_KEY) || '{}') : null;
-
-    let aggregatedData;
-    if (cachedData) {
-      aggregatedData = cachedData;
-    } else {
-      aggregatedData = await fetchAllCommits();
-      setCache(GITHUB_COMMITS_KEY, aggregatedData);
-    }
-
-    let formattedCommits = [];
-    if (timeFrame === 'weekly') {
-        const weeklyData = Object.entries(aggregatedData)
-            .filter(([key]) => key.startsWith('Week'))
-            .map(([name, commits]) => ({ name, commits }))
-            .sort((a, b) => parseInt(a.name.split(' ')[1]) - parseInt(b.name.split(' ')[1]));
-        formattedCommits = weeklyData.slice(-10); // Show last 10 weeks
-    } else if (timeFrame === 'monthly') {
-        const monthlyData = Object.entries(aggregatedData)
-            .filter(([key]) => key.match(/^[A-Z][a-z]{2} \d{4}$/))
-            .map(([name, commits]) => ({ name, commits }))
-            .sort((a, b) => new Date(a.name) as any - (new Date(b.name) as any));
-        formattedCommits = monthlyData.slice(-6); // Show last 6 months
-    } else if (timeFrame === 'yearly') {
-        const yearlyData = Object.entries(aggregatedData)
-            .filter(([key]) => key.match(/^\d{4}$/))
-            .map(([name, commits]) => ({ name, commits }))
-            .sort((a, b) => parseInt(a.name) - parseInt(b.name));
-        formattedCommits = yearlyData.slice(-3); // Show last 3 years
-    }
-    
-    setCommits(formattedCommits);
-    setCommitsLoading(false);
-  };
-
   useEffect(() => {
     fetchLeetCodeData();
     fetchGithubData();
     fetchGithubRepos();
-    fetchGithubLanguages();
   }, []);
-
-  useEffect(() => {
-    updateCommitsData();
-  }, [timeFrame]);
 
   const leetcodeStats = leetcodeData || fallbackLeetCodeStats;
   const githubStats = githubData || fallbackGithubStats;
@@ -446,18 +265,6 @@ const CodingProfiles: React.FC = () => {
     return `Top 15%`;
   };
 
-  (Date.prototype as any).getWeek = function() {
-    const date = new Date(this.getTime());
-    date.setHours(0, 0, 0, 0);
-    date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
-    const week1 = new Date(date.getFullYear(), 0, 4);
-    return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
-  };
-
-  const chartColors = [
-    '#003f5c', '#2f4b7c', '#665191', '#a05195', '#d45087', '#f95d6a', '#ff7c43', '#ffa600'
-  ];
-
   return (
     <section
       id="coding-profiles"
@@ -484,9 +291,9 @@ const CodingProfiles: React.FC = () => {
           variants={containerVariants}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
-          className="max-w-6xl mx-auto flex flex-col gap-12"
+          className="max-w-6xl mx-auto flex flex-col gap-8"
         >
-          {/* GitHub Profile Card */}
+          {/* GitHub Profile Card - Ab poora space lega aur sabse pehle dikhega */}
           <motion.div
             variants={itemVariants}
             className="w-full bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-3xl shadow-2xl overflow-hidden border border-white/20 dark:border-slate-700/50 hover:shadow-3xl transition-all duration-500"
@@ -505,7 +312,7 @@ const CodingProfiles: React.FC = () => {
                 </div>
                 <div className="flex items-center gap-3">
                   <motion.button
-                    onClick={() => { fetchGithubData(); fetchGithubRepos(); fetchGithubLanguages(); updateCommitsData(); }}
+                    onClick={() => { fetchGithubData(); fetchGithubRepos(); }}
                     disabled={githubLoading || reposLoading}
                     className="flex items-center gap-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white px-3 sm:px-4 py-2 rounded-lg transition-all duration-300 text-sm font-medium disabled:opacity-50"
                     whileHover={{ scale: 1.05 }}
@@ -535,7 +342,7 @@ const CodingProfiles: React.FC = () => {
               <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-white/80 text-xs sm:text-sm">
                 <div className="flex items-center gap-2">
                   <div className={`w-2 h-2 rounded-full ${githubLoading ? 'bg-yellow-400 animate-pulse' : githubError ? 'bg-red-400' : 'bg-green-400'}`}></div>
-                  <span>{(githubLoading || reposLoading || languagesLoading || commitsLoading) ? 'Fetching live data...' : (githubError || reposError) ? 'Using cached data' : 'Live data'}</span>
+                  <span>{(githubLoading || reposLoading) ? 'Fetching live data...' : (githubError || reposError) ? 'Using cached data' : 'Live data'}</span>
                 </div>
                 {lastUpdated && (
                   <span>Last updated: {lastUpdated.toLocaleTimeString()}</span>
@@ -579,83 +386,8 @@ const CodingProfiles: React.FC = () => {
                       </div>
                     </motion.div>
                   </div>
-
-                  {/* Charts Section */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8">
-                    <div className="p-4 bg-white/50 dark:bg-slate-700/50 rounded-2xl shadow-md">
-                        <h4 className="text-lg font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
-                            <BarChart2 size={20} className="text-blue-500" /> Top Languages
-                        </h4>
-                        {languagesLoading ? (
-                            <div className="flex items-center justify-center py-8">
-                                <Loader2 size={24} className="animate-spin text-slate-600 dark:text-slate-400" />
-                            </div>
-                        ) : (
-                            <ResponsiveContainer width="100%" height={200}>
-                                <BarChart data={languages} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
-                                    <XAxis dataKey="name" stroke="#6b7280" />
-                                    <YAxis stroke="#6b7280" />
-                                    <Tooltip />
-                                    <Bar dataKey="count" fill="#3b82f6">
-                                        {languages.map((entry, index) => (
-                                            <Cell key={`cell-${index}`} fill={chartColors[index % chartColors.length]} />
-                                        ))}
-                                    </Bar>
-                                </BarChart>
-                            </ResponsiveContainer>
-                        )}
-                    </div>
-                    
-                    <div className="p-4 bg-white/50 dark:bg-slate-700/50 rounded-2xl shadow-md">
-                        <div className="flex items-center justify-between mb-4">
-                          <h4 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                              <GitCommit size={20} className="text-green-500" /> Commits
-                          </h4>
-                          <div className="flex gap-2">
-                            <motion.button
-                              onClick={() => setTimeFrame('weekly')}
-                              className={`px-3 py-1 rounded-full text-xs font-semibold transition-colors ${timeFrame === 'weekly' ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600'}`}
-                              whileHover={{ scale: 1.05 }}
-                            >
-                              Weekly
-                            </motion.button>
-                            <motion.button
-                              onClick={() => setTimeFrame('monthly')}
-                              className={`px-3 py-1 rounded-full text-xs font-semibold transition-colors ${timeFrame === 'monthly' ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600'}`}
-                              whileHover={{ scale: 1.05 }}
-                            >
-                              Monthly
-                            </motion.button>
-                            <motion.button
-                              onClick={() => setTimeFrame('yearly')}
-                              className={`px-3 py-1 rounded-full text-xs font-semibold transition-colors ${timeFrame === 'yearly' ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600'}`}
-                              whileHover={{ scale: 1.05 }}
-                            >
-                              Yearly
-                            </motion.button>
-                          </div>
-                        </div>
-                        {commitsLoading ? (
-                            <div className="flex items-center justify-center py-8">
-                                <Loader2 size={24} className="animate-spin text-slate-600 dark:text-slate-400" />
-                            </div>
-                        ) : (
-                            <ResponsiveContainer width="100%" height={200}>
-                                <LineChart data={commits} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
-                                    <XAxis dataKey="name" stroke="#6b7280" />
-                                    <YAxis stroke="#6b7280" />
-                                    <Tooltip />
-                                    <Line type="monotone" dataKey="commits" stroke="#22c55e" strokeWidth={2} />
-                                </LineChart>
-                            </ResponsiveContainer>
-                        )}
-                    </div>
-                  </div>
                   
-                  {/* Recent Repositories Section */}
-                  <div className="mt-8 pt-8">
+                  <div className="mt-8 pt-8 border-t border-slate-200 dark:border-slate-700">
                     <h4 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white mb-6 text-center">
                       Top 4 Repositories
                     </h4>
@@ -670,12 +402,12 @@ const CodingProfiles: React.FC = () => {
                     ) : (
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         {githubRepos.map((repo) => (
-                          <motion.a
+                          <motion.a 
                             key={repo.id}
                             href={repo.html_url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="group block bg-white dark:bg-slate-700 p-6 rounded-xl border border-slate-200 dark:border-slate-600 hover:shadow-lg transition-all duration-300"
+                            className="group block bg-white dark:bg-slate-700 p-6 rounded-xl border border-slate-200 dark:border-slate-600 hover:shadow-xl transition-all duration-300"
                             whileHover={{ y: -5 }}
                           >
                             <h5 className="text-lg sm:text-xl font-bold text-blue-600 dark:text-blue-400 group-hover:text-blue-700 dark:group-hover:text-blue-300 truncate mb-2 leading-tight transition-colors">
@@ -710,7 +442,7 @@ const CodingProfiles: React.FC = () => {
             </div>
           </motion.div>
           
-          {/* LeetCode Profile Card */}
+          {/* LeetCode Profile Card - Ab yeh dusre number par aayega */}
           <motion.div
             variants={itemVariants}
             className="w-full bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-3xl shadow-2xl overflow-hidden border border-white/20 dark:border-slate-700/50 hover:shadow-3xl transition-all duration-500"
@@ -979,6 +711,7 @@ const CodingProfiles: React.FC = () => {
   );
 };
 
+// Helper function to get a color for a programming language
 const getLanguageColor = (language: string): string => {
   switch (language) {
     case 'TypeScript': return '#3178C6';
